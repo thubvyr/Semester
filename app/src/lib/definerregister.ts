@@ -241,6 +241,7 @@ export const FUNCTIONS: readonly (readonly [name: string, category: Category, ga
   ['make_family_share', 'sharing', ['auth.uid()']],
   ['make_referral_code', 'self-service', ['auth.uid()']],
   ['manage_volunteer', 'moderation', ['private.has_capability']],
+  ['mark_notification_inbox', 'self-service', ['auth.uid()', 'recipient_id = auth.uid()']],
   ['moderate_opportunity', 'moderation', ['private.has_capability']],
   ['move_office_action', 'admin', ['auth.uid()', 'private.may_publish']],
   ['mutual_connections', 'read-helper', ['auth.uid()']],
@@ -285,6 +286,7 @@ export const FUNCTIONS: readonly (readonly [name: string, category: Category, ga
   ['read_family_share', 'sharing', ['auth.uid()']],
   ['read_guardian_calendar_projection', 'sharing', ['auth.uid()', 'private.is_minor']],
   ['read_guardian_projection_access_history', 'sharing', ['auth.uid()']],
+  ['read_notification_inbox', 'read-helper', ['auth.uid()', 'i.recipient_id = auth.uid()']],
   ['read_privacy_request_detail', 'admin', ['auth.uid()', 'private.assert_fresh_mfa', 'private.privacy_case_allowed']],
   ['read_shared_accommodation', 'sharing', ['auth.uid()']],
   ['read_support_case_signals', 'sharing', ['auth.uid()', 'private.assert_fresh_mfa', 'private.subject_has_capability', 'private.support_agent', 'private.support_consent_active', 'public.read_support_signals']],
@@ -329,6 +331,7 @@ export const FUNCTIONS: readonly (readonly [name: string, category: Category, ga
   ['send_help_request', 'self-service', ['auth.uid()', 'private.school_of']],
   ['set_member_capabilities', 'admin', ['private.org_can']],
   ['set_member_standing', 'admin', ['auth.uid()', 'private.org_can']],
+  ['set_notification_preference', 'self-service', ['auth.uid()', 'p.school_id = want_school']],
   ['set_school_enforcement', 'admin', ['private.is_app_admin']],
   ['set_support_email_notice', 'self-service', ['auth.uid()']],
   ['share_with_advisor', 'sharing', ['auth.uid()']],
@@ -478,6 +481,10 @@ export const AFTER_SECOND_READING: readonly { file: string; functions: readonly 
   {
     file: '20261011160000_privileged_access_review.sql',
     functions: ['begin_privileged_access_review', 'complete_privileged_access_review', 'decide_privileged_access_review_item', 'privileged_access_review', 'resolve_privileged_access_review_investigation'],
+  },
+  {
+    file: '20261010150100_notification_inbox_client.sql',
+    functions: ['mark_notification_inbox', 'read_notification_inbox', 'set_notification_preference'],
   },
   {
     file: '20261009230000_guardian_projection_foundation.sql',
