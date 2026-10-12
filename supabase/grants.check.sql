@@ -390,6 +390,10 @@ declare
     -- 20260928010000: the caller's own live capabilities, same predicate as
     -- private.has_capability, so staff screens can open for staff.
     'my_capabilities()',
+    -- 20261008223000: the caller's own yes/no signal for whether a live
+    -- platform_admin or support_agent grant still needs aal2. It exposes no
+    -- role roster or capability and is used only to show the elevation gate.
+    'privileged_mfa_required()',
     -- 20260929070000: click-to-cancel. The owner of an individual
     -- subscription ends it at the period end in one call, reason optional;
     -- cancelling must be as easy as signing up. Refuses anyone else's.
@@ -620,6 +624,12 @@ declare
     -- watermarks without exposing either projection table.
     'read_tenant_projection(want_tenant text, after_capability text, want_limit integer)',
 
+    -- Per read model: computed freshness, lag, events behind, dead letters,
+    -- last sanitized error and last rebuild with parity. It requires platform
+    -- console:operate (aal2), reads counts and ages from the outbox and never a
+    -- payload, aggregate or tenant id, and writes nothing.
+    'ops_projection_dashboard()',
+
     -- Credential-free connector health. It requires the platform console
     -- shell, derives tenants from exact-school integration:view grants,
     -- excludes demos by default, and returns no credential, cursor, payload,
@@ -630,6 +640,23 @@ declare
     -- platform console shell and platform incident:communicate, excludes demo
     -- tenants without exact implementation scope, and performs no mutation.
     'console_release_incidents(include_demo boolean)',
+
+    -- Protected incident-evidence metadata and hash-linked custody. Every
+    -- callable path requires platform console plus incident-response
+    -- authority and fresh MFA; the backing private tables have no client or
+    -- service-role grants.
+    'incident_evidence_custody(want_incident text)',
+    'record_incident_evidence(want_incident text, want_kind text, want_source_system text, want_evidence_locator text, want_sha256 text, want_byte_size bigint, want_captured_at timestamp with time zone, want_retention_until timestamp with time zone, want_classification text)',
+    'record_incident_evidence_custody(want_evidence text, want_action text, want_custodian text, want_reason_code text, want_observed_sha256 text)',
+
+    -- Identity-minimized, three-operator privileged role-grant review. These paths require
+    -- access_review:manage at platform scope and fresh MFA; the private
+    -- snapshot, decisions and signoff have no client or service-role grants.
+    'begin_privileged_access_review(want_request_key text, want_period_start date, want_period_end date, want_next_due date)',
+    'complete_privileged_access_review(want_review text)',
+    'decide_privileged_access_review_item(want_item text, want_decision text, want_reason_code text)',
+    'privileged_access_review(want_review text)',
+    'resolve_privileged_access_review_investigation(want_item text, want_resolution_code text)',
 
     -- Identity-minimized privacy queue. It requires the platform console
     -- shell, derives tenants from exact-school data_request:handle grants and
