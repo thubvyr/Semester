@@ -24,6 +24,10 @@ will happily serve you the copy you already had.
 
 ## Unreleased
 
+### Operators can inspect Semester as one connected ecosystem
+
+For operators holding the console grant, **Semester Operations** now has a read-only **Connected ecosystem** tab after **Finance model**. It maps the supplied Personal Education OS, Institution Operating OS and Semester Company OS into one platform view, and lets an operator inspect all 26 workspace, 281 screen and 122 capability contracts. The view labels the handoff as specification evidence and does not claim that a provider, institution, data connection or privileged operation is authorized or enabled. Students and school administrators will notice nothing.
+
 ### Toolkit work can travel in a device workspace backup
 
 Device workspace backups now include the signed-in account's Toolkit work: assignment workspaces, Research Studio projects, AI-use declarations and the separate Data Studio projects with their original imported data. Restoring checks the entire backup before writing anything and restores those records into the account doing the restore, not the account name from the old device. Research Studio's source, claim and project removal previews now say to create a device workspace backup first if you may need to restore the removed work; without one, it must still be re-entered from the originals.
